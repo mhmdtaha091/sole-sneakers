@@ -10,16 +10,17 @@ export default function ShoeModel() {
     const scanRef = useRef();
     const { scene } = useGLTF('/models/shoe.glb');
 
-    // Center the loaded model on its bounding box
     useEffect(() => {
         if (!scene) return;
-        const box = new THREE.Box3().setFromObject(scene);
-        const center = box.getCenter(new THREE.Vector3());
-        scene.position.sub(center);
-        // Normalize scale so the shoe fits nicely in the viewport
-        const size = box.getSize(new THREE.Vector3());
+        // Pass 1: normalize scale based on natural bounding box
+        const box1 = new THREE.Box3().setFromObject(scene);
+        const size = box1.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z);
-        scene.scale.setScalar(2.2 / maxDim);
+        if (maxDim > 0) scene.scale.setScalar(2.8 / maxDim);
+        // Pass 2: recompute center AFTER scale is applied, then center it
+        const box2 = new THREE.Box3().setFromObject(scene);
+        const center = box2.getCenter(new THREE.Vector3());
+        scene.position.sub(center);
     }, [scene]);
 
     useFrame(({ clock }) => {
