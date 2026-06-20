@@ -27,10 +27,10 @@ export default function Home() {
                         </div>
                     </div>
                     <div className="hero-3d">
-                        <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
+                        <Canvas camera={{ position: [4, 0.4, 3], fov: 45 }}>
                             <Suspense fallback={null}>
                                 <ShoeModel />
-                                <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
+                                <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.4} target={[0, 0, 0]} />
                             </Suspense>
                         </Canvas>
                     </div>
